@@ -1,0 +1,50 @@
+# Import pandas
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv("data/ecommerce_sales_dataset.csv")
+
+# Preview data
+df.head()
+
+# Dataset structure
+df.info()
+
+# Statistical summary
+df.describe()
+
+# Total rows and columns
+df.shape
+
+# Total revenue
+df["Total_Price"].sum()
+
+# Total revenue in lakhs
+round(df["Total_Price"].sum()/100000,2)
+
+# Unique customers
+df["Customer_ID"].nunique()
+
+# Top 5 selling products
+df.groupby("Product_Name")["Quantity"].sum().sort_values(ascending=False).head(5)
+
+# Revenue by product category
+df.groupby("Product_Category")["Total_Price"].sum().sort_values(ascending=False)
+
+# Revenue by category in lakhs
+round(df.groupby("Product_Category")["Total_Price"].sum()/100000,2)
+
+# Convert order date to datetime
+df["Order_Date"] = pd.to_datetime(df["Order_Date"])
+
+# Monthly revenue trend
+df.groupby(df["Order_Date"].dt.month)["Total_Price"].sum()
+
+# Cancelled orders
+df[df["Order_Status"]=="Cancelled"].shape[0]
+
+# Orders by payment type
+df.groupby("Payment_Type").size().sort_values(ascending=False)
+
+# Average order value
+round(df["Total_Price"].mean(),2)
